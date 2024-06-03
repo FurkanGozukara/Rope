@@ -15,6 +15,7 @@ onnxruntime.log_verbosity_level = -1
 import rope.FaceUtil as faceutil
 import pickle
 from platform import system
+import os
 
 class Models():
     def __init__(self):
@@ -86,12 +87,11 @@ class Models():
         bboxes = []
         kpss = []
 
-        if detect_mode=='Retinaface':
+        if detect_mode == 'Retinaface':
             if not self.retinaface_model:
-                if system() == 'Linux':
-                    self.retinaface_model = onnxruntime.InferenceSession('./models/det_10g.onnx', providers=self.providers)
-                else:
-                    self.retinaface_model = onnxruntime.InferenceSession('.\models\det_10g.onnx', providers=self.providers)
+                # Convert relative path to absolute path
+                model_path = os.path.abspath('./models/det_10g.onnx')
+                self.retinaface_model = onnxruntime.InferenceSession(model_path, providers=self.providers)
 
             bboxes, kpss = self.detect_retinaface(img, max_num=max_num, score=score, use_landmark_detection=use_landmark_detection, landmark_detect_mode=landmark_detect_mode, landmark_score=landmark_score, from_points=from_points)
 
