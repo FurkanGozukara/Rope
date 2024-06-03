@@ -133,7 +133,10 @@ class Models():
 
         if detect_mode=='5':
             if not self.resnet50_model:
-                self.resnet50_model = onnxruntime.InferenceSession("./models/res50.onnx", providers=self.providers)
+                if system() == 'Linux':
+                    self.resnet50_model = onnxruntime.InferenceSession("./models/res50.onnx", providers=self.providers)
+                else:
+                    self.resnet50_model = onnxruntime.InferenceSession(".\models\res50.onnx", providers=self.providers)
 
                 feature_maps = [[64, 64], [32, 32], [16, 16]]
                 min_sizes = [[16, 32], [64, 128], [256, 512]]
@@ -155,15 +158,23 @@ class Models():
 
         elif detect_mode=='68':
             if not self.face_landmark_68_model:
-                self.face_landmark_68_model = onnxruntime.InferenceSession('./models/2dfan4.onnx', providers=self.providers)
+                if system() == 'Linux':
+                    self.face_landmark_68_model = onnxruntime.InferenceSession('./models/2dfan4.onnx', providers=self.providers)
+                else:
+                    self.face_landmark_68_model = onnxruntime.InferenceSession('.\models\2dfan4.onnx', providers=self.providers)
 
             kpss, scores = self.detect_face_landmark_68(img, bbox=bbox, det_kpss=det_kpss, convert68_5=True, from_points=from_points)
 
         elif detect_mode=='3d68':
             if not self.face_landmark_3d68_model:
-                self.face_landmark_3d68_model = onnxruntime.InferenceSession('./models/1k3d68.onnx', providers=self.providers)
-                with open('./models/meanshape_68.pkl', 'rb') as f:
-                    self.mean_lmk = pickle.load(f)
+                if system() == 'Linux':
+                    self.face_landmark_3d68_model = onnxruntime.InferenceSession('./models/1k3d68.onnx', providers=self.providers)
+                    with open('./models/meanshape_68.pkl', 'rb') as f:
+                        self.mean_lmk = pickle.load(f)
+                else:
+                    self.face_landmark_3d68_model = onnxruntime.InferenceSession('.\models\1k3d68.onnx', providers=self.providers)
+                    with open('.\models\meanshape_68.pkl', 'rb') as f:
+                        self.mean_lmk = pickle.load(f)
 
             kpss, scores = self.detect_face_landmark_3d68(img, bbox=bbox, det_kpss=det_kpss, convert68_5=True, from_points=from_points)
 
@@ -171,13 +182,19 @@ class Models():
 
         elif detect_mode=='98':
             if not self.face_landmark_98_model:
-                self.face_landmark_98_model = onnxruntime.InferenceSession('./models/peppapig_teacher_Nx3x256x256.onnx', providers=self.providers)
+                if system() == 'Linux':
+                    self.face_landmark_98_model = onnxruntime.InferenceSession('./models/peppapig_teacher_Nx3x256x256.onnx', providers=self.providers)
+                else:
+                    self.face_landmark_98_model = onnxruntime.InferenceSession('.\models\peppapig_teacher_Nx3x256x256.onnx', providers=self.providers)
 
             kpss, scores = self.detect_face_landmark_98(img, bbox=bbox, det_kpss=det_kpss, convert98_5=True, from_points=from_points)
 
         elif detect_mode=='106':
             if not self.face_landmark_106_model:
-                self.face_landmark_106_model = onnxruntime.InferenceSession('./models/2d106det.onnx', providers=self.providers)
+                if system() == 'Linux':
+                    self.face_landmark_106_model = onnxruntime.InferenceSession('./models/2d106det.onnx', providers=self.providers)
+                else:
+                    self.face_landmark_106_model = onnxruntime.InferenceSession('.\models\2d106det.onnx', providers=self.providers)
 
             kpss, scores = self.detect_face_landmark_106(img, bbox=bbox, det_kpss=det_kpss, convert106_5=True, from_points=from_points)
 
@@ -185,10 +202,16 @@ class Models():
 
         elif detect_mode=='478':
             if not self.face_landmark_478_model:
-                self.face_landmark_478_model = onnxruntime.InferenceSession('./models/face_landmarks_detector_Nx3x256x256.onnx', providers=self.providers)
+                if system() == 'Linux':
+                    self.face_landmark_478_model = onnxruntime.InferenceSession('./models/face_landmarks_detector_Nx3x256x256.onnx', providers=self.providers)
+                else:
+                    self.face_landmark_478_model = onnxruntime.InferenceSession('.\models\face_landmarks_detector_Nx3x256x256.onnx', providers=self.providers)
 
             if not self.face_blendshapes_model:
-                self.face_blendshapes_model = onnxruntime.InferenceSession('./models/face_blendshapes_Nx146x2.onnx', providers=self.providers)
+                if system() == 'Linux':
+                    self.face_blendshapes_model = onnxruntime.InferenceSession('./models/face_blendshapes_Nx146x2.onnx', providers=self.providers)
+                else:
+                    self.face_blendshapes_model = onnxruntime.InferenceSession('.\models\face_blendshapes_Nx146x2.onnx', providers=self.providers)
 
             kpss, scores = self.detect_face_landmark_478(img, bbox=bbox, det_kpss=det_kpss, convert478_5=True, from_points=from_points)
 
